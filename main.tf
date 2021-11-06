@@ -69,12 +69,17 @@ data "aws_ami" "eu-amazon-linux-2" {
   }
 }
 
+data "aws_subnet_ids" "main_subnet_id" {
+  vpc_id = var.vpc_id
+}
+
 resource "aws_instance" "my_server" {
   ami                    = data.aws_ami.eu-amazon-linux-2.id
   instance_type          = var.instance_type
   key_name               = aws_key_pair.deployer.key_name
   vpc_security_group_ids = [aws_security_group.sg_my_server.id]
   user_data              = data.template_file.user_data.rendered
+  subnet_id = tolist(data.aws_subnet_ids.main_subnet_id.ids)[0]
 
   tags = {
     Name = var.server_name
