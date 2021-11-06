@@ -79,7 +79,7 @@ resource "aws_instance" "my_server" {
   key_name               = aws_key_pair.deployer.key_name
   vpc_security_group_ids = [aws_security_group.sg_my_server.id]
   user_data              = data.template_file.user_data.rendered
-  subnet_id = tolist(data.aws_subnet_ids.main_subnet_id.ids)[0]
+  subnet_id              = tolist(data.aws_subnet_ids.main_subnet_id.ids)[0]
 
   tags = {
     Name = var.server_name
